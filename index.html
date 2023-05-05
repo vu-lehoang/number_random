@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Number Generator</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<style>
+*{
+    padding: 0;margin: 0;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: linear-gradient(128deg, #ff8e52, rgb(227, 244, 103));
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1.title {
+    font-size: 3rem;
+    margin-top: 2rem;
+    text-transform: uppercase;
+    color: #FFF;
+    text-shadow: 2px 2px 4px #ff8e52;
+    font-weight: bold;
+   
+}
+
+.number-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    font-size: 5rem;
+}
+
+.number-display span {
+    margin: 0 1rem;
+    font-size: 5rem;
+    font-weight: bold;
+    border: 2px solid #fff;
+    box-shadow: 2px 2px 4px rgb(255, 142, 82);
+    padding: 20px 30px;
+    border-radius: 16px;
+}
+
+button {
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.2),
+            5px 5px 3px rgba(0,0,0,0.14),
+            5px 5px 3px rgba(0,0,0,0.12);
+    }
+button.reset{
+    background-color: #E21818;
+}
+button.reset:hover{
+    border: 1px solid #E21818;
+    background: #fff;
+    color: #E21818;
+}
+button.spin:hover{
+    border: 1px solid #4caf50;
+    background: #fff;
+    color: #4caf50;
+}
+button:active {
+  background-color: #2a622b; /* Màu nền khi click */
+  box-shadow: 0 5px #666; /* Đổ bóng */
+  transform: translateY(4px); /* Dịch chuyển lên */
+}
+.table__lucky{
+    position: fixed;
+    margin: 15px;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    width: 350px;
+    max-width: fit-content;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    height: 30px;
+}
+.table__lucky thead{
+    text-align: left;
+}
+.table__lucky tbody th{
+    font-size: 28px;
+    font-weight: bold;
+    color: #E21818;
+    margin-bottom: 20px;
+}
+.table__lucky #winningNumbersTableBody{
+    margin-top: 20px;
+}
+.table__lucky #winningNumbersTableBody tr{
+    text-align: center;
+}
+.table__lucky #winningNumbersTableBody tr td{
+    font-size: 22px;
+    padding: 5px 0;
+}
+.row{
+    display: flex;
+    gap: 15px;
+    margin: 2rem 0;
+}
+img.logo{
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+}
+</style>
+<body>
+
+<div class="container">
+    <img class="logo"src="logo-chatgpt.png" alt="">
+<h1 class="title">Trời cho Trò chơi</h1>
+<div class="number-display">
+    <span id="number1">0</span>
+    <span id="number2">0</span>
+    <span id="number3">0</span>
+</div>
+<div class="row">
+    <button class="spin" onclick="spin()">Quay số</button>
+    <button class="reset" onclick="reset()" >Reset</button>
+</div>
+
+<div>
+    <h1 id="winning-number">Số trúng thưởng: </h1>
+</div>
+
+<table class="table__lucky">
+    <th>Danh sách may mắn</th> 
+    <tbody id="winningNumbersTableBody">
+        
+    </tbody>
+</table>
+</div>
+<script>
+const winningNumbers = [];
+function spin() {
+    // Lấy các phần tử DOM tương ứng với các số
+    const number1 = document.getElementById("number1");
+    const number2 = document.getElementById("number2");
+    const number3 = document.getElementById("number3");
+
+    // Giá trị ngẫu nhiên trong khoảng từ 0 đến 9
+    const random1 = Math.floor(Math.random() * 10);
+    const random2 = Math.floor(Math.random() * 10);
+    const random3 = Math.floor(Math.random() * 10);
+
+    // Thay đổi số hiện tại thành số ngẫu nhiên sau mỗi khoảng thời gian 100ms
+    let i = 0;
+    const interval = setInterval(() => {
+    number1.innerText = Math.floor(Math.random() * 10);
+    i++;
+    if (i > 20) {
+        clearInterval(interval);
+        number1.innerText = random1;
+    }
+    }, 500);
+
+    i = 0;
+    setTimeout(() => {
+    const interval = setInterval(() => {
+        number2.innerText = Math.floor(Math.random() * 10);
+        i++;
+        if (i > 20) {
+        clearInterval(interval);
+        number2.innerText = random2;
+        }
+    }, 100);
+    }, 1000);
+
+    i = 0;
+    setTimeout(() => {
+    const interval = setInterval(() => {
+        number3.innerText = Math.floor(Math.random() * 10);
+        i++;
+        if (i > 20) {
+        clearInterval(interval);
+        number3.innerText = random3;
+        }
+    }, 100);
+    }, 1500);
+    setTimeout(() => {
+        winningNumbers.push(random1);
+        document.getElementById("winning-number").innerText = "Số trúng thưởng: " + random1 +random2 +random3;
+    }, 2500);
+    // hiển thị các số đã trúng giải
+    setTimeout(()=>{
+        const winningNumbersTableBody = document.getElementById("winningNumbersTableBody");
+        const winningNumbersString = localStorage.getItem("winningNumbers");
+        const winningNumbers = JSON.parse(winningNumbersString) || [];
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        const cellText = document.createTextNode(`${random1} ${random2} ${random3}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+        winningNumbersTableBody.insertBefore(row, winningNumbersTableBody.firstChild);
+
+        // Lưu các số đã trúng giải vào localStorage
+        winningNumbers.push([random1, random2, random3]);
+        localStorage.setItem("winningNumbers", JSON.stringify(winningNumbers));
+    },3000)
+}
+    
+    function reset() {
+        document.getElementById("number1").innerText = "0";
+        document.getElementById("number2").innerText = "0";
+        document.getElementById("number3").innerText = "0";
+        document.getElementById("winning-number").innerText = "Số trúng thưởng: " ;
+    }
+</script>
+</body>
+</html>
